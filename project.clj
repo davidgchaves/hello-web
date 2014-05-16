@@ -6,4 +6,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [ring "1.2.2"]]
 
-  :main hello-web.core)
+  :main hello-web.core
+
+  :profiles {:dev
+             {:main hello-web.core/-dev-main}})

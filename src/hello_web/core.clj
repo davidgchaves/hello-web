@@ -1,6 +1,7 @@
-(ns hello-web.core)
+(ns hello-web.core
+  (:require [ring.adapter.jetty :as jetty]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn -main [port]
+  (jetty/run-jetty (fn [req] {:status 200 :body "Hello, web!" :headers {}})
+                   {:port (Integer. port)}))
+

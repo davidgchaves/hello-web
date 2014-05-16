@@ -1,24 +1,26 @@
 (ns hello-web.core
   (:require [ring.adapter.jetty :as jetty]
-            [ring.middleware.reload :refer [wrap-reload]]))
+            [ring.middleware.reload :refer [wrap-reload]]
+            [compojure.core :refer [defroutes GET]]
+            [compojure.route :refer [not-found]]))
 
 (defn greet [req]
-  (cond
-    (= "/" (:uri req))
-    {:status 200
-     :body "Hello, web! (without restarting YAY!)"
-     :headers {}}
-    (= "/goodbye" (:uri req))
-    {:status 200
-     :body "Bye, web!"
-     :headers {}}
-    :else
-    {:status 404
-     :body "Page not found."
-     :headers {}}))
+  {:status 200
+   :body "Hello, web!"
+   :headers {}})
+
+(defn bye [req]
+  {:status 200
+   :body "Bye, web!"
+   :headers {}})
+
+(defroutes app
+  (GET "/" [] greet)
+  (GET "/goodbye" [] bye)
+  (not-found "Page not found."))
 
 (defn -main [port]
-  (jetty/run-jetty greet                 {:port (Integer. port)}))
+  (jetty/run-jetty app                 {:port (Integer. port)}))
 
 (defn -dev-main [port]
-  (jetty/run-jetty (wrap-reload #'greet) {:port (Integer. port)}))
+  (jetty/run-jetty (wrap-reload #'app) {:port (Integer. port)}))

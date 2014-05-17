@@ -9,6 +9,11 @@
    :body "Hello, web!"
    :headers {}})
 
+(defn about [req]
+  {:status 200
+   :body "Hi. I'm David and I'm having tons of fun learning Web Dev in Clojure... Yay!!!!"
+   :headers {}})
+
 (defn bye [req]
   {:status 200
    :body "Bye, web!"
@@ -16,6 +21,7 @@
 
 (defroutes app
   (GET "/" [] greet)
+  (GET "/about" [] about)
   (GET "/goodbye" [] bye)
   (not-found "Page not found."))
 

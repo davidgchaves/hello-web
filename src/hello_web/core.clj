@@ -1,12 +1,18 @@
 (ns hello-web.core
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
+            [ring.handler.dump :refer [handle-dump]]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found]]))
 
 (defn greet [req]
   {:status 200
    :body "Hello, web!"
+   :headers {}})
+
+(defn request [req]
+  {:status 200
+   :body (pr-str req)
    :headers {}})
 
 (defn about [req]
@@ -22,6 +28,8 @@
 (defroutes app
   (GET "/" [] greet)
   (GET "/about" [] about)
+  (GET "/request" [] request)
+  (GET "/pretty-request" [] handle-dump)
   (GET "/goodbye" [] bye)
   (not-found "Page not found."))
 

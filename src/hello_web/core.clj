@@ -21,6 +21,32 @@
      :body (str "Yo! " name "!")
      :headers {}}))
 
+(def operations
+  {"+" +
+   "-" -
+   "*" *
+   ":" /})
+
+(def print-operations
+  {"+" "+"
+   "-" "-"
+   "*" "*"
+   ":" "/"})
+
+(defn calculator [req]
+  (let [x (Integer. (get-in req [:route-params :x]))
+        y (Integer. (get-in req [:route-params :y]))
+        op (get-in req [:route-params :op])
+        print-op (get print-operations op)
+        f (get operations op)]
+    (if f
+      {:status 200
+       :body (str x print-op y " = " (f x y))
+       :headers {}}
+      {:status 404
+       :body (str "Unknown operator: " op)
+       :headers {}})))
+
 (defn about [req]
   {:status 200
    :body "Hi. I'm David and I'm having tons of fun learning Web Dev in Clojure... Yay!!!!"
@@ -37,6 +63,7 @@
   (GET "/request" [] request)
   (GET "/pretty-request" [] handle-dump)
   (GET "/yo/:name" [] personal-greeting)
+  (GET "/calc/:x/:op/:y" [] calculator)
   (GET "/goodbye" [] bye)
   (not-found "Page not found."))
 

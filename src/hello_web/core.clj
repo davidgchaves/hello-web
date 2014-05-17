@@ -15,6 +15,12 @@
    :body (pr-str req)
    :headers {}})
 
+(defn personal-greeting [req]
+  (let [name (get-in req [:route-params :name])]
+    {:status 200
+     :body (str "Yo! " name "!")
+     :headers {}}))
+
 (defn about [req]
   {:status 200
    :body "Hi. I'm David and I'm having tons of fun learning Web Dev in Clojure... Yay!!!!"
@@ -30,6 +36,7 @@
   (GET "/about" [] about)
   (GET "/request" [] request)
   (GET "/pretty-request" [] handle-dump)
+  (GET "/yo/:name" [] personal-greeting)
   (GET "/goodbye" [] bye)
   (not-found "Page not found."))
 

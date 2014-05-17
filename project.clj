@@ -7,6 +7,10 @@
                  [ring "1.2.2"]
                  [compojure "1.1.8"]]
 
+  :min-lein-version "2.0.0"
+
+  :uberjar-name "hello-web.jar"
+
   :main hello-web.core
 
   :profiles {:dev
